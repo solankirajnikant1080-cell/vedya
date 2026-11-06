@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaidyarambh - National Event Portal & PC Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ayur: {
+                            900: '#1a3c34', // Deep Ayurvedic Forest Green
+                            800: '#234e44',
+                            700: '#2d6356',
+                            600: '#387b6c',
+                            100: '#eef5f3',
+                            50: '#f4f8f7',
+                        },
+                        gold: {
+                            500: '#c59b27', // Rich Warm Gold
+                            600: '#a67f1e',
+                            100: '#fdf8e6',
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-heading { font-family: 'Cinzel', serif; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2d6356;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="h-full text-slate-800 flex flex-col justify-between">
+
+    <!-- Top Alert Banner -->
+    <div class="bg-gold-500 text-slate-950 font-medium text-xs md:text-sm py-2 px-4 text-center tracking-wide shadow-sm flex items-center justify-center gap-2">
+        <i class="fa-solid fa-sparkles text-xs"></i>
+        <span>Vaidyarambh 2026 - National Ayurvedic Delegates Summit | Registration & Accommodation Portal</span>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="bg-ayur-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo / Brand -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('overview')">
+                    <div class="w-11 h-11 bg-gold-500 text-ayur-900 rounded-full flex items-center justify-center shadow-lg font-bold text-xl font-heading">
+                        🌿
+                    </div>
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-bold font-heading tracking-wider text-white">VAIDYARAMBH</h1>
+                        <p class="text-xs text-gold-500 tracking-widest uppercase">PC Event Management Portal</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 font-medium text-sm">
+                    <button onclick="switchTab('overview')" id="nav-overview" class="nav-btn px-4 py-2 rounded-lg transition-colors duration-200 text-white bg-ayur-800">
+                        <i class="fa-solid fa-compass mr-1.5 text-gold-500"></i> Overview
+                    </button>
+                    <button onclick="switchTab('register')" id="nav-register" class="nav-btn px-4 py-2 rounded-lg transition-colors duration-200 text-slate-300 hover:text-white hover:bg-ayur-800">
+                        <i class="fa-solid fa-id-card mr-1.5 text-gold-500"></i> Registration Form
+                    </button>
+                    <button onclick="switchTab('accommodation')" id="nav-accommodation" class="nav-btn px-4 py-2 rounded-lg transition-colors duration-200 text-slate-300 hover:text-white hover:bg-ayur-800">
+                        <i class="fa-solid fa-hotel mr-1.5 text-gold-500"></i> Accommodation
+                    </button>
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-4 py-2 rounded-lg transition-colors duration-200 text-slate-300 hover:text-white hover:bg-ayur-800 border border-gold-500/30">
+                        <i class="fa-solid fa-chart-line mr-1.5 text-gold-500"></i> PC Control Dashboard
+                    </button>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white focus:outline-none p-2 rounded-lg hover:bg-ayur-800">
+                        <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-ayur-800 border-t border-ayur-700 px-4 pt-2 pb-4 space-y-2 text-sm font-medium">
+            <button onclick="switchTab('overview'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-md text-white hover:bg-ayur-700">
+                <i class="fa-solid fa-compass mr-2 text-gold-500"></i> Event Overview
+            </button>
+            <button onclick="switchTab('register'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-md text-slate-200 hover:bg-ayur-700">
+                <i class="fa-solid fa-id-card mr-2 text-gold-500"></i> Registration Form
+            </button>
+            <button onclick="switchTab('accommodation'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-md text-slate-200 hover:bg-ayur-700">
+                <i class="fa-solid fa-hotel mr-2 text-gold-500"></i> Accommodation Form
+            </button>
+            <button onclick="switchTab('dashboard'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-md text-gold-500 font-semibold hover:bg-ayur-700">
+                <i class="fa-solid fa-chart-line mr-2"></i> PC Data Dashboard
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Custom Notification Toast -->
+        <div id="toast" class="hidden fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-6 py-3.5 rounded-xl shadow-2xl flex items-center space-x-3 border-l-4 border-gold-500 transition-all duration-300">
+            <i class="fa-solid fa-circle-check text-gold-500 text-lg"></i>
+            <span id="toast-message" class="text-sm font-medium">Action successful!</span>
+        </div>
+
+        <!-- SECTION 1: EVENT OVERVIEW -->
+        <section id="tab-overview" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative rounded-2xl bg-gradient-to-r from-ayur-900 via-ayur-800 to-ayur-900 text-white p-8 md:p-12 overflow-hidden shadow-xl border border-ayur-700">
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="inline-block px-3 py-1 bg-gold-500/20 text-gold-500 border border-gold-500/30 text-xs rounded-full font-semibold uppercase tracking-widest">
+                        Official Event Portal
+                    </span>
+                    <h1 class="text-3xl md:text-5xl font-bold font-heading leading-tight">Vaidyarambh 2026</h1>
+                    <p class="text-slate-300 text-base md:text-lg">
+                        National Summit & Knowledge Conclave for Ayurveda Practitioners, Researchers, and Students. Seamlessly register, arrange your stays, and track coordinator updates.
+                    </p>
+                    <div class="pt-4 flex flex-wrap gap-4">
+                        <button onclick="switchTab('register')" class="px-6 py-3 bg-gold-500 hover:bg-gold-600 text-ayur-900 font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm">
+                            Register Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                        <button onclick="switchTab('accommodation')" class="px-6 py-3 bg-ayur-700 hover:bg-ayur-600 text-white font-semibold rounded-xl transition text-sm border border-ayur-600">
+                            Book Accommodation
+                        </button>
+                    </div>
+                </div>
+                <!-- Background Graphic Element -->
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-white text-9xl pointer-events-none font-heading">
+                    🌿
+                </div>
+            </div>
+
+            <!-- Quick Details Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start space-x-4">
+                    <div class="p-3 bg-ayur-50 text-ayur-700 rounded-xl text-xl">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900">Dates & Venue</h3>
+                        <p class="text-sm text-slate-600 mt-1">October 14-16, 2026</p>
+                        <p class="text-xs text-slate-500">Main Auditorium, National Ayur Campus</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start space-x-4">
+                    <div class="p-3 bg-gold-100 text-gold-600 rounded-xl text-xl">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900">Delegate Categories</h3>
+                        <p class="text-sm text-slate-600 mt-1">Students, Faculty, Doctors</p>
+                        <p class="text-xs text-slate-500">Special discounts for early registrations</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start space-x-4">
+                    <div class="p-3 bg-ayur-50 text-ayur-700 rounded-xl text-xl">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900">PC Support Desk</h3>
+                        <p class="text-sm text-slate-600 mt-1">pc-desk@vaidyarambh.org</p>
+                        <p class="text-xs text-slate-500">Call: +91 98765 43210</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: REGISTRATION FORM -->
+        <section id="tab-register" class="tab-content hidden max-w-3xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                <div class="bg-ayur-900 p-6 text-white border-b border-ayur-800">
+                    <h2 class="text-2xl font-bold font-heading">Delegate Registration</h2>
+                    <p class="text-xs text-gold-500 mt-1">Please fill in your details to register for Vaidyarambh 2026</p>
+                </div>
+
+                <form id="registrationForm" onsubmit="handleRegistrationSubmit(event)" class="p-6 md:p-8 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Full Name -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Full Name *</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                    <i class="fa-solid fa-user text-sm"></i>
+                                </span>
+                                <input type="text" required id="regFullName" placeholder="Dr. / Mr. / Ms. Name" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Email Address *</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                    <i class="fa-solid fa-envelope text-sm"></i>
+                                </span>
+                                <input type="email" required id="regEmail" placeholder="delegate@domain.com" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Phone / WhatsApp Number *</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                    <i class="fa-solid fa-phone text-sm"></i>
+                                </span>
+                                <input type="tel" required id="regPhone" placeholder="+91 90000 00000" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Institution / College -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Institution / College / Org *</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                    <i class="fa-solid fa-building-columns text-sm"></i>
+                                </span>
+                                <input type="text" required id="regInstitution" placeholder="Ayurvedic Medical College..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Delegate Type -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Delegate Category *</label>
+                            <select id="regCategory" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                                <option value="">Select Category</option>
+                                <option value="BAMS Student">BAMS Student</option>
+                                <option value="PG Scholar / MD">PG Scholar / MD</option>
+                                <option value="Faculty / Doctor">Faculty / Practitioner</option>
+                                <option value="Industry Representative">Industry Representative</option>
+                            </select>
+                        </div>
+
+                        <!-- Payment Status -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Payment Reference / Txn ID *</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                    <i class="fa-solid fa-receipt text-sm"></i>
+                                </span>
+                                <input type="text" required id="regPaymentTxn" placeholder="UPI / NEFT Transaction Ref ID" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accommodation Checkbox -->
+                    <div class="p-4 bg-ayur-50 rounded-xl border border-ayur-100 flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-sm text-ayur-900">Do you also require accommodation?</p>
+                            <p class="text-xs text-slate-600">You can also submit accommodation details separately later.</p>
+                        </div>
+                        <input type="checkbox" id="regNeedAccom" class="w-5 h-5 text-ayur-700 rounded border-slate-300 focus:ring-ayur-700">
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-3 bg-ayur-900 hover:bg-ayur-800 text-white font-bold rounded-xl shadow-md transition text-sm flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane text-gold-500"></i>
+                            <span>Submit Registration</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ACCOMMODATION FORM -->
+        <section id="tab-accommodation" class="tab-content hidden max-w-3xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                <div class="bg-ayur-900 p-6 text-white border-b border-ayur-800">
+                    <h2 class="text-2xl font-bold font-heading">Accommodation Request Form</h2>
+                    <p class="text-xs text-gold-500 mt-1">Book room stays for delegate attendees during the event</p>
+                </div>
+
+                <form id="accommodationForm" onsubmit="handleAccommodationSubmit(event)" class="p-6 md:p-8 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Full Name -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Full Name *</label>
+                            <input type="text" required id="accFullName" placeholder="Registered Name" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                        </div>
+
+                        <!-- Phone / Contact -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Contact Phone *</label>
+                            <input type="tel" required id="accPhone" placeholder="+91 Phone Number" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                        </div>
+
+                        <!-- Check-in Date -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Check-in Date *</label>
+                            <input type="date" required id="accCheckIn" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                        </div>
+
+                        <!-- Check-out Date -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Check-out Date *</label>
+                            <input type="date" required id="accCheckOut" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                        </div>
+
+                        <!-- Room Preference -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Room Type Preference *</label>
+                            <select id="accRoomType" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                                <option value="Shared Hostel (Non-AC)">Shared Hostel (Non-AC)</option>
+                                <option value="Shared Room (AC)">Shared Room (AC)</option>
+                                <option value="Private Single Room (AC)">Private Single Room (AC)</option>
+                            </select>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Gender (for room allotment) *</label>
+                            <select id="accGender" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Special Notes -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Special Requests / Notes</label>
+                        <textarea id="accNotes" rows="3" placeholder="Food requirements, accessibility requests, or sharing preferences..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-sm"></textarea>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-3 bg-gold-500 hover:bg-gold-600 text-ayur-900 font-bold rounded-xl shadow-md transition text-sm flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-hotel"></i>
+                            <span>Submit Accommodation Request</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- SECTION 4: PC DATA DASHBOARD (CONTROL CENTER) -->
+        <section id="tab-dashboard" class="tab-content hidden space-y-6">
+            <!-- Header with Title and Export Button -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div>
+                    <h2 class="text-2xl font-bold font-heading text-ayur-900">PC Event Data Manager</h2>
+                    <p class="text-xs text-slate-500">Live monitoring of registrations, payment confirmations, and room requests.</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="exportDataCSV()" class="px-4 py-2 bg-ayur-900 hover:bg-ayur-800 text-white rounded-xl text-xs font-semibold flex items-center space-x-2 shadow-sm transition">
+                        <i class="fa-solid fa-file-csv text-gold-500 text-sm"></i>
+                        <span>Export CSV</span>
+                    </button>
+                    <button onclick="resetToSampleData()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold flex items-center space-x-1 transition">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> Reset Sample Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Counter Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 uppercase">Total Submissions</span>
+                        <div class="w-8 h-8 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-baseline space-x-2">
+                        <span id="stat-total" class="text-3xl font-bold text-slate-900">0</span>
+                        <span class="text-xs text-slate-500">records</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 uppercase">Confirmed Delegates</span>
+                        <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-baseline space-x-2">
+                        <span id="stat-confirmed" class="text-3xl font-bold text-emerald-600">0</span>
+                        <span class="text-xs text-slate-500">confirmed</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 uppercase">Pending Review</span>
+                        <div class="w-8 h-8 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-baseline space-x-2">
+                        <span id="stat-pending" class="text-3xl font-bold text-amber-600">0</span>
+                        <span class="text-xs text-slate-500">pending</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 uppercase">Accommodated</span>
+                        <div class="w-8 h-8 bg-gold-100 text-gold-600 rounded-lg flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-bed"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex items-baseline space-x-2">
+                        <span id="stat-accommodated" class="text-3xl font-bold text-gold-600">0</span>
+                        <span class="text-xs text-slate-500">requests</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls: Search & Filters -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center">
+                <!-- Search Input -->
+                <div class="relative w-full md:w-80">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </span>
+                    <input type="text" id="searchInput" oninput="renderDataTable()" placeholder="Search by name, college, email..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-ayur-700 text-xs">
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <!-- Status Filter -->
+                    <select id="statusFilter" onchange="renderDataTable()" class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-ayur-700">
+                        <option value="ALL">All Statuses</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+
+                    <!-- Category Filter -->
+                    <select id="categoryFilter" onchange="renderDataTable()" class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-ayur-700">
+                        <option value="ALL">All Categories</option>
+                        <option value="BAMS Student">BAMS Student</option>
+                        <option value="PG Scholar / MD">PG Scholar / MD</option>
+                        <option value="Faculty / Doctor">Faculty / Doctor</option>
+                        <option value="Industry Representative">Industry Representative</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table Data View -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-ayur-900 text-white font-semibold">
+                            <tr>
+                                <th class="p-3.5">Delegate Details</th>
+                                <th class="p-3.5">Category & College</th>
+                                <th class="p-3.5">Payment Ref</th>
+                                <th class="p-3.5">Accommodation</th>
+                                <th class="p-3.5">Status</th>
+                                <th class="p-3.5 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody" class="divide-y divide-slate-100">
+                            <!-- Rows rendered via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="emptyState" class="hidden p-8 text-center text-slate-500">
+                    <i class="fa-solid fa-folder-open text-3xl mb-2 text-slate-300"></i>
+                    <p class="text-sm">No matching registration records found.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-ayur-900 text-slate-400 py-6 border-t border-ayur-800 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <span class="text-gold-500 font-bold font-heading">Vaidyarambh 2026</span>
+                <span>• Program Committee (PC) Portal</span>
+            </div>
+            <div>
+                <span>Designed for Vaidyarambh Event Coordination & Data Management</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Sample Initial Data Seed
+        const initialData = [
+            {
+                id: "VR-101",
+                fullName: "Dr. Ananya Sharma",
+                email: "ananya.sharma@ayurved.edu",
+                phone: "+91 98765 12345",
+                institution: "National Institute of Ayurveda, Jaipur",
+                category: "Faculty / Doctor",
+                paymentTxn: "UPI9823749823",
+                needAccom: true,
+                checkIn: "2026-10-13",
+                checkOut: "2026-10-17",
+                roomType: "Private Single Room (AC)",
+                status: "Confirmed",
+                dateSubmitted: "2026-03-01"
+            },
+            {
+                id: "VR-102",
+                fullName: "Rohan Varma",
+                email: "rohan.v@gmail.com",
+                phone: "+91 98111 22334",
+                institution: "Institute of Teaching and Research in Ayurveda",
+                category: "BAMS Student",
+                paymentTxn: "TXN77321049",
+                needAccom: true,
+                checkIn: "2026-10-14",
+                checkOut: "2026-10-16",
+                roomType: "Shared Hostel (Non-AC)",
+                status: "Pending",
+                dateSubmitted: "2026-03-02"
+            },
+            {
+                id: "VR-103",
+                fullName: "Dr. Rajesh Iyer",
+                email: "dr.iyer@herbals.org",
+                phone: "+91 94440 55667",
+                institution: "Kottakkal Arya Vaidya Sala",
+                category: "Industry Representative",
+                paymentTxn: "NEFT9081238",
+                needAccom: false,
+                checkIn: "-",
+                checkOut: "-",
+                roomType: "None",
+                status: "Confirmed",
+                dateSubmitted: "2026-03-03"
+            }
+        ];
+
+        // Fetch or Initialize Local Storage Data
+        function getData() {
+            const data = localStorage.getItem('vaidyarambh_event_data');
+            if (!data) {
+                localStorage.setItem('vaidyarambh_event_data', JSON.stringify(initialData));
+                return initialData;
+            }
+            return JSON.parse(data);
+        }
+
+        function saveData(data) {
+            localStorage.setItem('vaidyarambh_event_data', JSON.stringify(data));
+            updateStats();
+            renderDataTable();
+        }
+
+        // Navigation Tab Switching
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            const selectedTab = document.getElementById(`tab-${tabId}`);
+            if (selectedTab) selectedTab.classList.remove('hidden');
+
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('bg-ayur-800', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-ayur-800', 'text-white');
+                activeBtn.classList.remove('text-slate-300');
+            }
+
+            if (tabId === 'dashboard') {
+                renderDataTable();
+                updateStats();
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Toast Notification System
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Registration Form Submit
+        function handleRegistrationSubmit(e) {
+            e.preventDefault();
+            const data = getData();
+            const newRecord = {
+                id: `VR-${Math.floor(1000 + Math.random() * 9000)}`,
+                fullName: document.getElementById('regFullName').value,
+                email: document.getElementById('regEmail').value,
+                phone: document.getElementById('regPhone').value,
+                institution: document.getElementById('regInstitution').value,
+                category: document.getElementById('regCategory').value,
+                paymentTxn: document.getElementById('regPaymentTxn').value,
+                needAccom: document.getElementById('regNeedAccom').checked,
+                checkIn: document.getElementById('regNeedAccom').checked ? "2026-10-14" : "-",
+                checkOut: document.getElementById('regNeedAccom').checked ? "2026-10-16" : "-",
+                roomType: document.getElementById('regNeedAccom').checked ? "Shared Hostel (Non-AC)" : "None",
+                status: "Pending",
+                dateSubmitted: new Date().toISOString().split('T')[0]
+            };
+
+            data.unshift(newRecord);
+            saveData(data);
+            document.getElementById('registrationForm').reset();
+            showToast('Registration submitted successfully! Status set to Pending verification.');
+            switchTab('dashboard');
+        }
+
+        // Accommodation Form Submit
+        function handleAccommodationSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('accFullName').value;
+            const phone = document.getElementById('accPhone').value;
+            const data = getData();
+
+            // Find matching delegate or create accommodation record
+            let existing = data.find(d => d.fullName.toLowerCase() === name.toLowerCase());
+            
+            if (existing) {
+                existing.needAccom = true;
+                existing.checkIn = document.getElementById('accCheckIn').value;
+                existing.checkOut = document.getElementById('accCheckOut').value;
+                existing.roomType = document.getElementById('accRoomType').value;
+            } else {
+                data.unshift({
+                    id: `VR-ACC-${Math.floor(100 + Math.random() * 900)}`,
+                    fullName: name,
+                    email: "N/A",
+                    phone: phone,
+                    institution: "Accommodation Request",
+                    category: "Delegate",
+                    paymentTxn: "N/A",
+                    needAccom: true,
+                    checkIn: document.getElementById('accCheckIn').value,
+                    checkOut: document.getElementById('accCheckOut').value,
+                    roomType: document.getElementById('accRoomType').value,
+                    status: "Pending",
+                    dateSubmitted: new Date().toISOString().split('T')[0]
+                });
+            }
+
+            saveData(data);
+            document.getElementById('accommodationForm').reset();
+            showToast('Accommodation request received and linked to PC records!');
+            switchTab('dashboard');
+        }
+
+        // Render Data Table
+        function renderDataTable() {
+            const data = getData();
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const statusF = document.getElementById('statusFilter').value;
+            const categoryF = document.getElementById('categoryFilter').value;
+
+            const filtered = data.filter(item => {
+                const matchesSearch = item.fullName.toLowerCase().includes(search) || 
+                                      item.institution.toLowerCase().includes(search) ||
+                                      item.email.toLowerCase().includes(search);
+                const matchesStatus = statusF === 'ALL' || item.status === statusF;
+                const matchesCategory = categoryF === 'ALL' || item.category === categoryF;
+
+                return matchesSearch && matchesStatus && matchesCategory;
+            });
+
+            const tbody = document.getElementById('dataTableBody');
+            const emptyState = document.getElementById('emptyState');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            filtered.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+                
+                const isConfirmed = item.status === 'Confirmed';
+
+                tr.innerHTML = `
+                    <td class="p-3.5">
+                        <div class="font-bold text-slate-900">${item.fullName}</div>
+                        <div class="text-slate-500 text-[11px]">${item.email} • ${item.phone}</div>
+                        <div class="text-[10px] text-slate-400 mt-0.5">ID: ${item.id}</div>
+                    </td>
+                    <td class="p-3.5">
+                        <span class="inline-block px-2 py-0.5 bg-ayur-100 text-ayur-900 font-medium text-[11px] rounded-md mb-1">${item.category}</span>
+                        <div class="text-slate-600 truncate max-w-[180px]">${item.institution}</div>
+                    </td>
+                    <td class="p-3.5">
+                        <span class="font-mono text-slate-700 bg-slate-100 px-2 py-1 rounded text-[11px] border border-slate-200">${item.paymentTxn}</span>
+                    </td>
+                    <td class="p-3.5">
+                        ${item.needAccom ? `
+                            <div class="text-gold-600 font-semibold"><i class="fa-solid fa-bed mr-1"></i> ${item.roomType}</div>
+                            <div class="text-slate-500 text-[10px]">${item.checkIn} to ${item.checkOut}</div>
+                        ` : `<span class="text-slate-400">Not Required</span>`}
+                    </td>
+                    <td class="p-3.5">
+                        <span class="px-2.5 py-1 rounded-full text-[11px] font-bold ${isConfirmed ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="p-3.5 text-right space-x-1">
+                        <button onclick="toggleStatus('${item.id}')" title="Toggle Status" class="p-1.5 hover:bg-slate-200 rounded-lg text-slate-600 transition">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                        </button>
+                        <button onclick="deleteRecord('${item.id}')" title="Delete" class="p-1.5 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded-lg transition">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Toggle Status
+        function toggleStatus(id) {
+            let data = getData();
+            data = data.map(item => {
+                if (item.id === id) {
+                    item.status = item.status === 'Confirmed' ? 'Pending' : 'Confirmed';
+                }
+                return item;
+            });
+            saveData(data);
+            showToast('Delegate status updated.');
+        }
+
+        // Delete Record
+        function deleteRecord(id) {
+            if (confirm(`Are you sure you want to delete record ${id}?`)) {
+                let data = getData();
+                data = data.filter(item => item.id !== id);
+                saveData(data);
+                showToast('Record removed.');
+            }
+        }
+
+        // Update Counter Stats
+        function updateStats() {
+            const data = getData();
+            document.getElementById('stat-total').textContent = data.length;
+            document.getElementById('stat-confirmed').textContent = data.filter(d => d.status === 'Confirmed').length;
+            document.getElementById('stat-pending').textContent = data.filter(d => d.status === 'Pending').length;
+            document.getElementById('stat-accommodated').textContent = data.filter(d => d.needAccom).length;
+        }
+
+        // Export Data CSV Mock/Download
+        function exportDataCSV() {
+            const data = getData();
+            if (data.length === 0) {
+                showToast('No data available to export.');
+                return;
+            }
+
+            const headers = ["ID", "Full Name", "Email", "Phone", "Institution", "Category", "Payment Txn", "Accommodation", "Room Type", "Check-in", "Check-out", "Status", "Date Submitted"];
+            const csvRows = [headers.join(",")];
+
+            data.forEach(item => {
+                const row = [
+                    `"${item.id}"`,
+                    `"${item.fullName}"`,
+                    `"${item.email}"`,
+                    `"${item.phone}"`,
+                    `"${item.institution}"`,
+                    `"${item.category}"`,
+                    `"${item.paymentTxn}"`,
+                    `"${item.needAccom ? 'Yes' : 'No'}"`,
+                    `"${item.roomType}"`,
+                    `"${item.checkIn}"`,
+                    `"${item.checkOut}"`,
+                    `"${item.status}"`,
+                    `"${item.dateSubmitted}"`
+                ];
+                csvRows.push(row.join(","));
+            });
+
+            const csvString = csvRows.join("\n");
+            const blob = new Blob([csvString], { type: "text/csv" });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.setAttribute("href", url);
+            a.setAttribute("download", `Vaidyarambh_Event_Data_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            showToast('CSV Export generated successfully!');
+        }
+
+        // Reset to initial sample data
+        function resetToSampleData() {
+            saveData(initialData);
+            showToast('Reset data to default sample records.');
+        }
+
+        // Window Init
+        window.onload = function() {
+            updateStats();
+        };
+    </script>
+</body>
+</html>
